@@ -1,3 +1,6 @@
+require "students"
+require "txt_parser"
+
 class StudentViewerCLI
   def initialize(input:, output: $stdout)
     @file_path = input
@@ -12,18 +15,18 @@ class StudentViewerCLI
 
   private
 
-  attr_reader :students
+  attr_reader :students, :file_path
 
   def import_students
     reduce_files_in_path do |imported_students, file|
-      import_file_path = "#{@file_path}/#{file}"
+      import_file_path = "#{file_path}/#{file}"
       parser = TXTParser.new(import_file_path)
       imported_students << StudentImporter.new(parser: parser).import
     end
   end
 
   def reduce_files_in_path(&block)
-    Dir.foreach("#{@file_path}").
+    Dir.foreach("#{file_path}").
       select { |f| f =~ /.txt/ }.
       reduce(Students.new, &block)
   end

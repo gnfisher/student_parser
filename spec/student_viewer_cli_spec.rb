@@ -13,15 +13,14 @@ describe StudentViewerCLI do
 
       result = StudentViewerCLI.new(input: folder_path, output: output).run
 
-      expect(result).to include(sorted_by_last_name_desc_result)
+      expect(output.string).to include(sorted_by_last_name_desc_result)
     end
   end
 
   def sorted_by_last_name_desc_result
-    StringIO.new(
-      "Output 3:
-      Vader Darth Vader's Castle 1/1/1900 Black\n
-      Skywalker Luke Mos Eisley 3/24/1990 Topaz\n
-      Calrissian Lando Cloud City 2/12/1920 Neon Blue")
+      "Output 3:\n\
+      Vader Darth Vader's Castle 1/1/1900 Black\n\
+      Skywalker Luke Mos Eisley 3/24/1990 Topaz\n\
+      Calrissian Lando Cloud City 2/12/1920 Neon Blue\n"
   end
 end
