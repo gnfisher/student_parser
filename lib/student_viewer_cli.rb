@@ -1,33 +1,30 @@
 class StudentViewerCLI
-  MERGED_FILE_PATH = 'tmp/merged_data.txt'
-
   def initialize(input:, output: $stdout)
     @file_path = input
-    $stdout = output
+    $stdout    = output
+    @students  = import_students
   end
 
   def run
-    # pass each file to importer
-    @students = load_students_from_file
     puts "Output 3:"
-    @students.sort_by(:last_name, order_by: :desc).each(&:to_s)
+    students.sort_by(:last_name, order_by: :desc).each(&:to_s)
   end
 
-  def load_students_from_file
-    build_merged_file
-    StudentImporter.new(parser: TXTParser.new(MERGED_FILE_PATH))
-  end
+  private
 
-  # def delete_merged_file
-  #   FileUtils.rm(MERGED_FILE_PATH)
-  # end
+  attr_reader :students
 
-  def build_merged_file
-    File.open(MERGED_FILE_PATH, 'a') do |merged_file|
-      Dir.foreach("#{@file_path}") do |f|
-        next unless f =~ /.txt/
-        merged_file << File.read("#{@file_path}/#{f}")
-      end
+  def import_students
+    reduce_files_in_path do |imported_students, file|
+      import_file_path = "#{@file_path}/#{file}"
+      parser = TXTParser.new(import_file_path)
+      imported_students << StudentImporter.new(parser: parser).import
     end
+  end
+
+  def reduce_files_in_path(&block)
+    Dir.foreach("#{@file_path}").
+      select { |f| f =~ /.txt/ }.
+      reduce(Students.new, &block)
   end
 end
