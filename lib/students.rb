@@ -4,7 +4,7 @@ class Students
   extend Forwardable
   def_delegators :@students, :each, :size
 
-  def initialize(students)
+  def initialize(students = [])
     @students = students
   end
 
