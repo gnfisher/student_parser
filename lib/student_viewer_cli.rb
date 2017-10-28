@@ -11,7 +11,7 @@ class StudentViewerCLI
 
   def run
     puts "Output 3:"
-    students.sort_by(:last_name, order_by: :desc).each(&:to_s)
+    students.order(last_name: :desc).each(&:to_s)
   end
 
   private

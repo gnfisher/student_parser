@@ -6,10 +6,11 @@ describe Students do
     students_one = Students.new(["s1"])
     students_two = Students.new(["s2"])
 
-    students_one.concat students_two
+    result = students_one.concat students_two
 
-    expect(students_one.size).to eq 2
-    expect(students_one.to_a).to match_array(["s1", "s2"])
+    expect(result.class).to eq Students
+    expect(result.size).to eq 2
+    expect(result.to_a).to match_array(["s1", "s2"])
   end
 
   it "can merge elements into its inner array and return itself" do

@@ -16,6 +16,7 @@ class Students
 
   def concat(students_to_merge)
     students.concat students_to_merge.students
+    self
   end
 
   def <<(element)
