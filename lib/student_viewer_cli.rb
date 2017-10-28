@@ -1,3 +1,4 @@
+require "student_importer"
 require "students"
 require "txt_parser"
 
@@ -21,7 +22,7 @@ class StudentViewerCLI
     reduce_files_in_path do |imported_students, file|
       import_file_path = "#{file_path}/#{file}"
       parser = TXTParser.new(import_file_path)
-      imported_students << StudentImporter.new(parser: parser).import
+      imported_students.concat(StudentImporter.new(parser: parser).import)
     end
   end
 
