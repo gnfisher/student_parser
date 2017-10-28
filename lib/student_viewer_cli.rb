@@ -11,7 +11,7 @@ class StudentViewerCLI
 
   def run
     puts "Output 3:"
-    students.order(last_name: :desc).each(&:to_s)
+    puts students.sort { |a,b| b.last_name <=> a.last_name }.to_s
   end
 
   private
@@ -22,7 +22,7 @@ class StudentViewerCLI
     reduce_files_in_path do |imported_students, file|
       import_file_path = "#{file_path}/#{file}"
       parser = TXTParser.new(import_file_path)
-      imported_students.concat(StudentImporter.new(parser: parser).import)
+      imported_students.merge(StudentImporter.new(parser).import)
     end
   end
 

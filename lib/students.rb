@@ -1,6 +1,4 @@
-require "pry"
 require "forwardable"
-require "sort_students_by_fields"
 
 class Students
   extend Forwardable
@@ -10,13 +8,13 @@ class Students
     @students = students
   end
 
-  def order(**fields)
-    SortStudentsByFields.run(students, fields)
+  def merge(students_to_merge)
+    students.concat(students_to_merge.students)
+    self
   end
 
-  def concat(students_to_merge)
-    students.concat students_to_merge.students
-    self
+  def sort(&block)
+    Students.new(students.sort(&block))
   end
 
   def <<(element)
@@ -26,6 +24,12 @@ class Students
 
   def to_a
     students
+  end
+
+  def to_s
+    students.map do |s|
+      "#{s.last_name} #{s.first_name} #{s.campus} #{s.date_of_birth} #{s.favorite_color}"
+    end
   end
 
   protected

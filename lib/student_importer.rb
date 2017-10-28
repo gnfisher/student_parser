@@ -2,7 +2,7 @@ require "ostruct"
 require "students"
 
 class StudentImporter
-  def initialize(parser:)
+  def initialize(parser)
     @parser = parser
   end
 

@@ -16,9 +16,6 @@ describe StudentViewerCLI do
   end
 
   def sorted_by_last_name_desc_result
-      "Output 3:\n\
-      Vader Darth Vader's Castle 1/1/1900 Black\n\
-      Skywalker Luke Mos Eisley 3/24/1990 Topaz\n\
-      Calrissian Lando Cloud City 2/12/1920 Neon Blue\n"
+      "Output 3:\nVader Darth Vader's Castle 1/1/1900 Black\nSkywalker Luke Mos Eisley 3/24/1990 Topaz\nCalrissian Lando Cloud City 2/12/1920 Neon Blue\n"
   end
 end

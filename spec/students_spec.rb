@@ -2,15 +2,15 @@ require "ostruct"
 require "students"
 
 describe Students do
-  it "can merge with another students object" do
+  it "concating students objects returns new students object" do
     students_one = Students.new(["s1"])
     students_two = Students.new(["s2"])
 
-    result = students_one.concat students_two
+    result = students_one.merge(students_two)
 
     expect(result.class).to eq Students
-    expect(result.size).to eq 2
-    expect(result.to_a).to match_array(["s1", "s2"])
+    expect(result).to match_array(students_one)
+    expect(result).to match_array(["s1", "s2"])
   end
 
   it "can merge elements into its inner array and return itself" do
@@ -19,11 +19,26 @@ describe Students do
     result = students << "s2"
 
     expect(result.class).to eq Students
+    expect(result).to match_array(["s1", "s2"])
+    expect(students).to match_array(result)
   end
 
-  it "calls SortStudentsByFields when ordering students" do
-    expect(SortStudentsByFields).to receive(:run)
+  it "can print out its students" do
+    students = Students.new(student_data)
 
-    Students.new(["s1"]).order(first_name: :desc)
+    result = students.to_s
+
+  end
+
+  def student_data
+    [
+      OpenStruct.new(
+        last_name: "Vader",
+        first_name: "Darth",
+        campus: "Mustafar",
+        favorite_color: "Black",
+        date_of_bith: "1/1/1900"
+      )
+    ]
   end
 end
