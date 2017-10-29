@@ -2,14 +2,13 @@ require "students"
 require "student"
 
 class StudentImporter
-  def initialize(parser:, student_class: Student)
-    @parser        = parser
-    @student_class = student_class
+  def initialize(parser)
+    @parser = parser
   end
 
   def import
     rows.reduce(Students.new) do |students, attributes|
-      students << student_class.new(attributes)
+      students << Student.new(attributes)
     end
   end
 
@@ -19,5 +18,5 @@ class StudentImporter
 
   private
 
-  attr_reader :parser, :student_class
+  attr_reader :parser
 end

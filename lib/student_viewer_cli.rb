@@ -29,7 +29,7 @@ class StudentViewerCLI
     reduce_files_in_path do |imported_students, file|
       import_file_path = "#{file_path}/#{file}"
       parser = TXTParser.new(import_file_path)
-      imported_students.merge(StudentImporter.new(parser: parser).import)
+      imported_students.merge(StudentImporter.new(parser).import)
     end
   end
 
