@@ -34,12 +34,12 @@ class Student
 
   attr_reader :attributes
 
-  def attributes_keys
+  def safe_keys
     ALLOWED_ATTRIBUTES & attributes.keys
   end
 
   def set_attributes
-    attributes_keys.each do |a|
+    safe_keys.each do |a|
       if a == :date_of_birth
         self.date_of_birth = Date.strptime(attributes.fetch(a), "%m-%d-%Y")
       else
