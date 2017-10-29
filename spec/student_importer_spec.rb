@@ -1,9 +1,12 @@
+require "ostruct"
 require "student_importer"
 
 describe StudentImporter do
   it "passes a file to a parser" do
     stub_parser do |parser_class, parser|
-      StudentImporter.new(parser_class.new()).import
+      StudentImporter.new(
+        parser: parser_class.new(),
+        student_class: OpenStruct).import
 
       expect(parser).to have_received(:rows)
     end
@@ -11,11 +14,12 @@ describe StudentImporter do
 
   it "returns a Students object with objects for each hash" do
     stub_parser do |parser_class, parser|
-      result = StudentImporter.new(parser_class.new()).import
+      result = StudentImporter.new(
+        parser: parser_class.new(),
+        student_class: OpenStruct).import
 
       expect(result.class).to eq Students
       expect(result.size).to eq 2
-      expect(result.first.class).to eq OpenStruct
     end
   end
 

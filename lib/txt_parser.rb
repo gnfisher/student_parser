@@ -1,3 +1,7 @@
+require "comma_delimited_line"
+require "dollar_delimited_line"
+require "pipe_delimited_line"
+
 class TXTParser
   attr_reader :file
 
@@ -6,19 +10,21 @@ class TXTParser
   end
 
   def rows
-    File.readlines(file).map do |line|
-      values = line.split(/,|\$|\|/).map(&:strip)
-      Hash[keys.each_with_index.map { |k, i| [k, values[i] ] }]
-    end
+    File.readlines(file).map { |line| delimeter.new(line).parse }
   end
 
-  def keys
-    [
-      :last_name,
-      :first_name,
-      :campus,
-      :favorite_color,
-      :date_of_birth
-    ]
+  private
+
+  def delimeter
+    case File.open(file, &:readline)
+    when /,/
+      CommaDelimitedLine
+    when /\$/
+      DollarDelimitedLine
+    when /\|/
+      PipeDelimitedLine
+    else
+      raise "Unrecognized delimiter used in #{file}."
+    end
   end
 end

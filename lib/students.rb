@@ -27,9 +27,7 @@ class Students
   end
 
   def to_s
-    students.map do |s|
-      "#{s.last_name} #{s.first_name} #{s.campus} #{s.date_of_birth} #{s.favorite_color}"
-    end
+    students.map(&:to_s)
   end
 
   protected
