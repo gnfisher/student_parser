@@ -1,5 +1,4 @@
 require "students"
-require "student"
 
 describe Students do
   it "concating students objects returns new students object" do
@@ -21,25 +20,5 @@ describe Students do
     expect(result.class).to eq Students
     expect(result).to match_array(["s1", "s2"])
     expect(students).to match_array(result)
-  end
-
-  it "can print out its students" do
-    students = Students.new(student_data)
-
-    result = students.to_s
-
-    expect(result).to include("Vader Darth Mustafar 1/1/1900 Black")
-  end
-
-  def student_data
-    [
-      Student.new(
-        last_name: "Vader",
-        first_name: "Darth",
-        campus: "Mustafar",
-        favorite_color: "Black",
-        date_of_birth: "1-1-1900"
-      )
-    ]
   end
 end
