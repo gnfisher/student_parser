@@ -19,7 +19,8 @@ best of my ability.
 
 Approach:
 
-* Discovery Testing, test-first approach. Top-down, use doubles to stub out
+* [Discovery
+  Testing](https://github.com/testdouble/contributing-tests/wiki/Discovery-Testing), test-first approach. Top-down, use doubles to stub out
   functionality that will come from the next layer below, one high-level integration test
   (`student_viewer_cli_spec` in this case) to make sure all pieces work
 together because of the free use of doubles in specs.
