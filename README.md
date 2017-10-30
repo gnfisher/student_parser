@@ -1,93 +1,65 @@
 # <img src='https://cloud.githubusercontent.com/assets/544541/4461515/092962a4-48bb-11e4-8e4c-88bee6e5a321.jpg' width=50> Engineering Code Challenge
 
-To help us get a clearer picture of your skills as a developer, we kindly request you take our code challenge. We encourage you to limit yourself to **4 to 5 hours'** worth of effort.
+## Installation & Useage
 
-## Requirements
+* `cd` into the directory and run `bundle install`
 
-* Please write a program in either Ruby or Javascript that:
+* Run `ruby print_sorted_students.rb` to view the desired output.
 
-  * Assembles a collection of student records by parsing data from 3 different files.
-  * Displays the collection 3 times, sorted 3 different ways.
+## Summary of Approach
 
-* Only use libraries, gems and packages listed below.
+Guiding principles:
 
-  * Ruby - The [Ruby Standard Library](https://ruby-doc.org/stdlib-2.4.0/) and a testing framework like [RSpec](https://github.com/rspec/rspec).
-  * Javascript - The [NodeJS API](https://nodejs.org/api/), a testing framework like [MochaJS](https://mochajs.org/) and a CSV library like [csv-parse](https://www.npmjs.com/package/csv-parse).
+* Favor explicitness over DRY-ness/cleverness/brevity.
 
-* Please use the latest stable version of Ruby MRI or NodeJS.
+* Follow [Sandi Metz's
+  rules](https://robots.thoughtbot.com/sandi-metz-rules-for-developers) to the
+best of my ability.
 
-* What we're looking for here is clear code and elegant object-oriented design. Please avoid imperative or functional coding style, or an overly clever solution.
 
-* When finished, archive your solution and upload it to the Greenhouse URL in the "Take Home Test from General Assembly" email you received with these instructions. Please do **not** publish your solution anywhere else!
+Approach:
 
-## Criteria
+* Discovery Testing, test-first approach. Top-down, use doubles to stub out
+  functionality that will come from the next layer below, one high-level integration test
+  (`student_viewer_cli_spec` in this case) to make sure all pieces work
+together because of the free use of doubles in specs.
 
-The qualities we're looking for are:
+* Start with the `StudentViewerCLI` class and spec to imagine an interface for
+  the program, and work down from there.
 
-|Criterion|Notes|
-|---|---|
-|**Clarity**|Is the intent of the code obvious? Are things named appropriately?|
-|**Maintainability**|How flexible is the code?|
-|**Testability**|Is it easy to test the code? _Please demonstrate with the appropriate degree and type of testing._|
-|**Precision**|Does the code produce the expected output, as provided below?|
+* Keep things as modular as possible - for example, make it esay to plug in a
+  differnet parser for CSV files in the future.
 
-## Input
 
-Please copy the data files (in the `data` folder) and include them in your solution.
+Details:
 
-  * comma.txt
-    * Delimiter: `,`
-    * Order: `last_name`, `first_name`, `campus`, `favorite_color`, `date_of_birth`
+* I've been exploring Discovery Testing lately and I'm a huge fan. The top-down
+  approach has consistently led to me producing less code and cleaner code. You
+intuitively find the places where its best to delegate and break out another
+class, and in writing the tests first and using doubles, you can also feel out
+bad design because it is a pain to setup a test for.
 
-  * dollar.txt
-    * Delimiter: `$`
-    * Order: `last_name`, `first_name`, `middle_initial`, `campus`, `date_of_birth`, `favorite_color`
+* After starting with the `StudentViewerCli` spec and class I worked my way
+  down. 
 
-  * pipe.txt
-    * Delimiter: `|`
-    * Order: `last_name`, `first_name`, `middle_initial`, `campus`, `favorite_color`, `date_of_birth`
+  * The `StudentImporter` is a factory that uses dependency injection to take any type of
+parser object that responds to rows and returns an array of hashes. 
 
-## Output
+  * The `TXTParser` class uses the strategy pattern to choose which line parser
+    class to instantiate (comma, dollar, pipe) - each of those classes is very
+simple, responds to a `#parse` method and returns a hash of the fields.
 
-Please display the collection in three different ways:
+  * The importer returns a `Students` collection, which is a simple class that
+    forwards most of its functionality to its wrapped Array. There is a little
+bit of customizatoin for `#merge` and `#<<` that makes sure to return self (the
+Students object) rather than array, so things behave properly.
 
-  1. Sorted by `campus` (ascending), then by `last_name` (ascending)
-  2. Sorted by `date_of_birth` (ascending)
-  3. Sorted by `last_name` (descending)
+  * The importer also creates Student objects from each hash. `Student` is a
+    simple class that filters out any keys not specifically allowed as
+properties of a `Student` object and does the work of printing itself as a
+properly formatted string as well as converting city abbreviations to their full
+names. The abbreviation-to-full-name city bit of code felt out of place here,
+but I didn't see an obviously better way to do it and, given the small scope of
+the project and time constraints, it seemed to me it was all right to leave it
+as is.
 
-Be certain that your solution performs all of the necessary steps to print this **exact** output:
-
-```
-Output 1:
-Kirlin Mckayla Atlanta 5/29/1986 Maroon
-Barrows Anika Hong Kong 5/5/1965 Spring Green
-Goyette Timmothy London 10/2/1964 Pacific Blue
-Nolan Rhiannon Los Angeles 10/4/1974 Vivid Tangerine
-Parker Matteo Melbourne 2/14/1962 Burnt Sienna
-Bednar Filomena New York City 1/24/1980 Salmon
-Cummerata Elliot New York City 4/3/1947 Neon Carrot
-Wilkinson Stacy New York City 1/22/1964 Shocking Pink
-Bruen Rigoberto San Francisco 12/1/1962 Raw Umber
-
-Output 2:
-Cummerata Elliot New York City 4/3/1947 Neon Carrot
-Parker Matteo Melbourne 2/14/1962 Burnt Sienna
-Bruen Rigoberto San Francisco 12/1/1962 Raw Umber
-Wilkinson Stacy New York City 1/22/1964 Shocking Pink
-Goyette Timmothy London 10/2/1964 Pacific Blue
-Barrows Anika Hong Kong 5/5/1965 Spring Green
-Nolan Rhiannon Los Angeles 10/4/1974 Vivid Tangerine
-Bednar Filomena New York City 1/24/1980 Salmon
-Kirlin Mckayla Atlanta 5/29/1986 Maroon
-
-Output 3:
-Wilkinson Stacy New York City 1/22/1964 Shocking Pink
-Parker Matteo Melbourne 2/14/1962 Burnt Sienna
-Nolan Rhiannon Los Angeles 10/4/1974 Vivid Tangerine
-Kirlin Mckayla Atlanta 5/29/1986 Maroon
-Goyette Timmothy London 10/2/1964 Pacific Blue
-Cummerata Elliot New York City 4/3/1947 Neon Carrot
-Bruen Rigoberto San Francisco 12/1/1962 Raw Umber
-Bednar Filomena New York City 1/24/1980 Salmon
-Barrows Anika Hong Kong 5/5/1965 Spring Green
-```
