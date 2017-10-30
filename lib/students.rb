@@ -2,7 +2,7 @@ require "forwardable"
 
 class Students
   extend Forwardable
-  def_delegators :@students, :each, :size, :first, :last, :sort_by, :sort
+  def_delegators :@students, :each, :size, :first, :last, :sort
 
   def initialize(students = [])
     @students = students
