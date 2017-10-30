@@ -25,6 +25,10 @@ class Student
     @campus = full_city_names[campus] || campus
   end
 
+  def date_of_birth=(dob_string)
+    @date_of_birth = Date.strptime(dob_string, "%m-%d-%Y")
+  end
+
   def to_s
     str = "#{last_name} #{first_name} #{campus} "\
           "#{date_of_birth.strftime('%-m/%-d/%Y')} #{favorite_color}"
@@ -40,11 +44,7 @@ class Student
 
   def set_attributes
     safe_keys.each do |a|
-      if a == :date_of_birth
-        self.date_of_birth = Date.strptime(attributes.fetch(a), "%m-%d-%Y")
-      else
-        public_send("#{a}=", attributes.fetch(a))
-      end
+      public_send("#{a}=", attributes.fetch(a))
     end
   end
 
