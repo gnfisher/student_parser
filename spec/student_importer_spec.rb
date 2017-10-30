@@ -19,12 +19,14 @@ describe StudentImporter do
   end
 
   def stub_parser(&block)
-    parser_class    = class_double("Parser")
+    parser_class = class_double("Parser")
     parser_instance = instance_double("parser")
+
     allow(parser_class).to receive(:new).
       and_return(parser_instance)
     allow(parser_instance).to receive(:rows).
       and_return([{name: "GreG"}, {name: "Dani"}])
+
     yield(parser_class, parser_instance) if block_given?
   end
 end

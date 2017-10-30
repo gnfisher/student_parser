@@ -29,7 +29,7 @@ together because of the free use of doubles in specs.
   the program, and work down from there.
 
 * Keep things as modular as possible - for example, make it esay to plug in a
-  differnet parser for CSV files in the future.
+  different parser for CSV files in the future.
 
 
 Details:
@@ -51,8 +51,8 @@ parser object that responds to rows and returns an array of hashes.
 simple, responds to a `#parse` method and returns a hash of the fields.
 
   * The importer returns a `Students` collection, which is a simple class that
-    forwards most of its functionality to its wrapped Array. There is a little
-bit of customizatoin for `#merge` and `#<<` that makes sure to return self (the
+    uses the Proxy pattern, forwarding most of its functionality to its wrapped Array. There is a little
+bit of customization for `#merge` and `#<<` that makes sure to return self (the
 Students object) rather than array, so things behave properly.
 
   * The importer also creates Student objects from each hash. `Student` is a
