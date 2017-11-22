@@ -1,5 +1,3 @@
-# <img src='https://cloud.githubusercontent.com/assets/544541/4461515/092962a4-48bb-11e4-8e4c-88bee6e5a321.jpg' width=50> Engineering Code Challenge
-
 ## Installation & Usage
 
 * `cd` into the directory and run `bundle install`
